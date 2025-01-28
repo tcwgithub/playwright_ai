@@ -1,5 +1,7 @@
 import { APIRequestContext } from '@playwright/test';
 import ENV from '../common/env';
+import { promises as fs } from 'fs';
+import path from 'path';
 
 export class LoginPageAPI {
   private request: APIRequestContext;
@@ -8,14 +10,25 @@ export class LoginPageAPI {
 
   constructor(request: APIRequestContext) {
     this.request = request;
-
-    // Use API-specific base URL and endpoint
     this.baseUrl = ENV.API_BASE_URL || '';
     this.endPoint = ENV.API_END_POINT || '';
 
     if (!this.baseUrl || !this.endPoint) {
       console.error('API Base URL or Endpoint is not set in ENV.');
-      throw new Error('API Base URL or Endpoint is missing.');
+      throw new Error('API Base URL or Endpoint missing.');
+    }
+  }
+
+  // Save data to a file
+  private async saveToFile(filePath: string, data: object): Promise<void> {
+    try {
+      const dir = path.dirname(filePath);
+      await fs.mkdir(dir, { recursive: true }); // Create the directory if it doesn't exist
+      await fs.writeFile(filePath, JSON.stringify(data, null, 2), 'utf8');
+      console.log(`Data Saved ${filePath}`);
+    } catch (error) {
+      console.error('Unable to Save File :', error);
+      throw error;
     }
   }
 
@@ -46,11 +59,27 @@ export class LoginPageAPI {
     console.log('Login Response Body:', responseBody);
 
     const statusCode = response.status();
+    const dataToSave = {
+      username: apiUsername,
+      password: apiPassword,
+      statusCode,
+      responseBody,
+    };
+
     if (response.ok() && responseBody.accessToken) {
       console.log(`Auth Success - Status: ${statusCode}`);
+
+      // Save all relevant data to the file
+      const filePath = path.join(__dirname, '../testData/apiLoginData.json');
+      await this.saveToFile(filePath, { ...dataToSave,  });
+
       return { token: responseBody.accessToken, statusCode };
     } else {
       console.error(`Auth Failed - Status: ${statusCode}`);
+      await this.saveToFile(
+        path.join(__dirname, '../testData/apiLoginData.json'),
+        { ...dataToSave, errorMessage: responseBody.message || 'Unknown error' }
+      );
       throw new Error(`Auth Failed: ${responseBody.message || 'Unknown error'}`);
     }
   }

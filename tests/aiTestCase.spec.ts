@@ -1,10 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { initializeFetch, getGeneratedTestCase, ApiResponse } from '../common/aiTestCaseGenerator'; // Ensure the correct path
+import { initializeFetch, getGeneratedTestCase, ApiResponse } from '../common/aiTestCaseGenerator';
 
 let generatedText: ApiResponse[] | null = null;
 
 test.beforeAll(async () => {
-  await initializeFetch(); // Dynamically import fetch
+  await initializeFetch();
 });
 
 test('should generate a test case from user story', async () => {
@@ -12,7 +12,7 @@ test('should generate a test case from user story', async () => {
   
   try {
     generatedText = await getGeneratedTestCase(userStory);
-    console.log('Generated Text:', generatedText);  // Log the output
+    console.log('Generated Text:', generatedText);
     
     if (generatedText) {
       console.log('Generated Test Case:', generatedText[0]?.generated_text || 'No text generated');
