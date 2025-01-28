@@ -1,0 +1,25 @@
+{
+  "name": "frameworkthilan",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx playwright test"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.49.1",
+    "@types/node": "^20.10.5",
+    "@types/node-fetch": "^2.6.12",
+    "node-fetch": "^3.3.2",
+    "typescript": "^5.7.3"
+  },
+  "dependencies": {
+    "allure-playwright": "^3.0.8",
+    "axios": "^1.7.9",
+    "chai": "^5.1.2",
+    "dotenv": "^16.4.7",
+    "mocha": "^11.1.0"
+  }
+}

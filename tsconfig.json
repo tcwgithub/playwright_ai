@@ -1,0 +1,12 @@
+{
+    "compilerOptions": {
+      "module": "ESNext",          // Change module to ESNext
+      "target": "ESNext",          // Ensure it's targeting a modern environment
+      "moduleResolution": "Node",  // Required for ES module resolution
+      "esModuleInterop": true,     // Ensure compatibility between ESM and CommonJS
+      "skipLibCheck": true,         // Optionally skip type checking of declaration files
+      "resolveJsonModule": true
+    }
+  }
+
+  
