@@ -4,3 +4,4 @@
 /playwright-report
 /test-results
 /allure-results
+/testData/apiAuthData.json
