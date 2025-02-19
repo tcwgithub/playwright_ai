@@ -17,7 +17,7 @@ export const initializeFetch = async () => {
 export const getGeneratedTestCase = async (userStory: string): Promise<ApiResponse[] | null> => {
   const url = 'https://api-inference.huggingface.co/models/EleutherAI/gpt-neo-2.7B';  // AI model endpoint
   const headers = {
-    'Authorization': `Bearer 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`,  // Hugging Face API key
+    'Authorization': ``,  // Hugging Face API key
     'Content-Type': 'application/json',
   };
 
