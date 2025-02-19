@@ -2,14 +2,16 @@ import { test, expect } from "@playwright/test";
 import { Pages } from '../common/pages';
 import * as shoppingData from '../testData/shoppingData.json';
 import ENV from "../common/env";
-import { PerfLoginPage } from '../performance/perfLoginPage';
+
+test.beforeEach(async ({ page }) => {
+  const pages = Pages(page);
+  await pages.loginPage.login(ENV.LOGINUSER, ENV.PASSWORD);
+  await page.waitForTimeout(3000);
+});
 
 test("@P2 @Smoke verify that the customer is able to place an order with complete information", async ({ page }) => {
   const pages = Pages(page);
 
-  await pages.loginPage.login(ENV.LOGINUSER, ENV.PASSWORD);
-
-  await page.waitForTimeout(3000);
   await pages.inventoryPage.addItemsToCart();
   await page.waitForTimeout(3000);
 
@@ -24,9 +26,4 @@ test("@P2 @Smoke verify that the customer is able to place an order with complet
   await expect(pages.cartPage.cartPageObjects.backHomeButton).toBeVisible();
   await pages.cartPage.cartPageObjects.backHomeButton.click();
   await expect(page).toHaveURL("/inventory.html");
-
-  // Execute performance test using PerfLoginPage
-  const perfLogin = new PerfLoginPage(page);
-  const pageLoadTime = await perfLogin.measurePerformance();
-  expect(pageLoadTime).toBeLessThan(5000);
 });

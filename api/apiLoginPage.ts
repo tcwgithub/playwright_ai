@@ -78,9 +78,9 @@ export class LoginPageAPI {
       console.error(`Auth Failed - Status: ${statusCode}`);
       await this.saveToFile(
         path.join(__dirname, '../testData/apiLoginData.json'),
-        { ...dataToSave, errorMessage: responseBody.message || 'Unknown error' }
+        { ...dataToSave, errorMessage: responseBody.message || 'Unknown Error' }
       );
-      throw new Error(`Auth Failed: ${responseBody.message || 'Unknown error'}`);
+      throw new Error(`Auth Failed: ${responseBody.message || 'Unknown Error'}`);
     }
   }
 

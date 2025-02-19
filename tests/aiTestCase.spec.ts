@@ -1,26 +1,21 @@
+// aiTestCase.spec.ts
+
 import { test, expect } from '@playwright/test';
-import { initializeFetch, getGeneratedTestCase, ApiResponse } from '../common/aiTestCaseGenerator';
+import { getGeneratedTestCase } from '../common/aiTestCaseGenerator';  // Path to your aiTestCaseGenerator.ts
 
-let generatedText: ApiResponse[] | null = null;
+test('should generate a valid test case from the user story', async () => {
+  const userStory = 'As a user, I want to log in to my account on the website with a valid username and password so I can access my profile.';
+  const generatedTestCase = await getGeneratedTestCase(userStory);
 
-test.beforeAll(async () => {
-  await initializeFetch();
-});
+  // Ensure that the generated text exists
+  expect(generatedTestCase).not.toBeNull();
 
-test('should generate a test case from user story', async () => {
-  const userStory = 'As a user, I want to log in so that I can access my account.';
-  
-  try {
-    generatedText = await getGeneratedTestCase(userStory);
+  if (generatedTestCase) {
+    const generatedText = generatedTestCase[0]?.generated_text;
     console.log('Generated Text:', generatedText);
-    
-    if (generatedText) {
-      console.log('Generated Test Case:', generatedText[0]?.generated_text || 'No text generated');
-    }
-  } catch (error) {
-    console.error('Error occurred while fetching generated test case:', error);
-  }
 
-  // Example assertion
-  expect(generatedText).not.toBeNull();
+    // Validate that the generated text contains expected test case details
+    expect(generatedText).toContain('Test steps');
+    expect(generatedText).toContain('Expected results');
+  }
 });

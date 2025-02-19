@@ -5,7 +5,7 @@ test('Verify API Authentication and Status', async ({ request }) => {
   const loginPage = new LoginPageAPI(request);
 
   try {
-    // Attempt to authenticate with invalid credentials to trigger error
+    // Attempt to authenticate with valid credentials to trigger error
     const { token, statusCode } = await loginPage.authenticate('emilys', 'emilyspass');
     expect(token).toBeDefined();
     expect(statusCode).toBe(200);
